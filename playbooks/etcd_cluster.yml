@@ -1,6 +1,6 @@
 ---
 
-- hosts: etcd_cluster
+- hosts:  '{{target|default("etcd_cluster")}}'  
   become: true
   become_method: sudo
   any_errors_fatal: true

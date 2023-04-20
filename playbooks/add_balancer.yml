@@ -1,7 +1,7 @@
 ---
 
 - name: Add haproxy balancer node (to the cluster "{{ patroni_cluster_name }}")
-  hosts: balancers
+  hosts: '{{target|default("balancers")}}'
   become: true
   become_method: sudo
   any_errors_fatal: true
@@ -125,7 +125,7 @@
       changed_when: false
       tags: always
 
-- hosts: new_balancer
+- hosts: '{{target|default("new_balancer")}}'
   become: true
   become_method: sudo
   gather_facts: true

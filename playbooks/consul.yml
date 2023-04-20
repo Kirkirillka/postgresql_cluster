@@ -15,11 +15,11 @@
       fail:
         msg:
           - "Please install consul role requirements (ansible.utils)"
-          - "ansible-galaxy install -r roles/consul/requirements.yml"
+          - "ansible-galaxy install -r ../roles/consul/requirements.yml"
       when:
         - ansible_utils_result.stderr is search("unable to find")
 
-- hosts: consul_instances
+- hosts: '{{target|default("consul_instances")}}' 
   become: true
   become_method: sudo
   any_errors_fatal: true

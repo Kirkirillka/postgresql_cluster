@@ -1,13 +1,13 @@
 ---
 
 - name: PostgreSQL High-Availability Cluster Scaling (add a replica node to the cluster "{{ patroni_cluster_name }}")
-  hosts: postgres_cluster
+  hosts: '{{target|default("postgres_cluster")}}' 
   become: true
   become_method: sudo
   any_errors_fatal: true
   gather_facts: true
   handlers:
-    - include: roles/patroni/handlers/main.yml
+    - include: ../roles/patroni/handlers/main.yml
   vars_files:
     - vars/main.yml
     - vars/system.yml
@@ -137,7 +137,7 @@
       changed_when: false
       tags: always
 
-- hosts: new_replica
+- hosts: '{{target|default("new_replica")}}'
   become: true
   become_method: sudo
   gather_facts: true
@@ -175,7 +175,7 @@
     - role: ntp
     - role: copy
 
-- hosts: pgbackrest:new_replica
+- hosts: '{{target|default("pgbackrest:new_replica")}}'
   become: true
   become_method: sudo
   gather_facts: true
@@ -202,7 +202,7 @@
   when: dcs_type == "consul"
   tags: consul
 
-- hosts: new_replica
+- hosts: '{{target|default("new_replica")}}' 
   become: true
   become_method: sudo
   gather_facts: true
